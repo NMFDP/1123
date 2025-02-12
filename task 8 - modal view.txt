@@ -1,0 +1,44 @@
+import React, { useState } from "react";
+import { View, Text, Modal, Button, StyleSheet } from "react-native";
+
+export default function App() {
+  // State to manage the visibility of the modal
+  const [modalVisible, setModalVisible] = useState(false);
+
+  return (
+    <View style={styles.container}>
+      {/* Button to open the modal */}
+      <Button title="Open Modal" onPress={() => setModalVisible(true)} />
+
+      {/* Modal Component */}
+      <Modal visible={modalVisible} transparent animationType="slide">
+        <View style={styles.modalView}>
+          {/* Modal Text */}
+          <Text style={styles.modalText}>You have opened the modal successfully!</Text>
+
+          {/* Button to close the modal */}
+          <Button title="Close" onPress={() => setModalVisible(false)} />
+        </View>
+      </Modal>
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1, // Makes the View take up the full screen
+    justifyContent: "center", // Centers content vertically
+    alignItems: "center", // Centers content horizontally
+  },
+  modalView: {
+    flex: 1, // Makes the modal take up the full screen
+    justifyContent: "center", // Centers content inside the modal
+    alignItems: "center", // Centers content horizontally
+    backgroundColor: "rgba(0, 0, 0, 0.5)", // Semi-transparent background effect
+  },
+  modalText: {
+    fontSize: 20, // Increases text size
+    color: "white", // Sets text color to white
+    marginBottom: 20, // Adds space between text and button
+  },
+});

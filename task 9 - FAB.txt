@@ -1,0 +1,38 @@
+import React from "react";
+import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import { AntDesign } from "@expo/vector-icons"; // Importing AntDesign icons from Expo
+
+export default function App() {
+  return (
+    <View style={styles.container}>
+      {/* Title Text */}
+      <Text style={styles.text}>Floating Action Button Example</Text>
+
+      {/* Floating Action Button (FAB) */}
+      <TouchableOpacity style={styles.fab}>
+        <AntDesign name="plus" size={24} color="white" /> {/* Plus icon inside FAB */}
+      </TouchableOpacity>
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1, // Full screen
+    justifyContent: "center", // Center content vertically
+    alignItems: "center", // Center content horizontally
+  },
+  text: {
+    fontSize: 18, // Text size
+    marginBottom: 20, // Adds spacing below the text
+  },
+  fab: {
+    position: "absolute", // Keeps the button in a fixed position
+    bottom: 20, // Distance from the bottom of the screen
+    right: 20, // Distance from the right side of the screen
+    backgroundColor: "tomato", // Button color
+    padding: 15, // Button padding
+    borderRadius: 50, // Circular button
+    elevation: 5, // Adds shadow effect (Android)
+  },
+});

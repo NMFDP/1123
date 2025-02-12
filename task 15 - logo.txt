@@ -1,0 +1,88 @@
+// Import necessary libraries
+import "react-native-gesture-handler"; // Required for React Navigation
+import React from "react";
+import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native"; // UI components
+import { NavigationContainer } from "@react-navigation/native"; // Navigation container
+import { createStackNavigator } from "@react-navigation/stack"; // Stack Navigator for screen transitions
+import { WebView } from "react-native-webview"; // WebView to display websites inside the app
+
+// Create Stack Navigator
+const Stack = createStackNavigator();
+
+// Array containing website details (name, URL, and logo)
+const websites = [
+  {
+    name: "Facebook", // Website name
+    url: "https://www.facebook.com", // Website URL
+    image: "https://upload.wikimedia.org/wikipedia/commons/0/05/Facebook_Logo_%282019%29.png", // Logo URL
+  },
+  {
+    name: "Instagram",
+    url: "https://www.instagram.com",
+    image: "https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png",
+  },
+];
+
+// Home Screen - Displays logos as buttons
+function HomeScreen({ navigation }) {
+  return (
+    <View style={styles.container}>
+      {/* Title text */}
+      <Text style={styles.title}>Select a Website</Text>
+
+      {/* Loop through websites array to display logos */}
+      {websites.map((site, index) => (
+        <TouchableOpacity
+          key={index} // Unique key for each item
+          onPress={() => navigation.navigate("Web", { url: site.url })} // Navigates to WebView with the selected URL
+          style={styles.logoContainer} // Style for spacing
+        >
+          {/* Display website logo */}
+          <Image source={{ uri: site.image }} style={styles.logo} />
+        </TouchableOpacity>
+      ))}
+    </View>
+  );
+}
+
+// Web Screen - Displays the selected website inside the app
+function WebScreen({ route }) {
+  return <WebView source={{ uri: route.params.url }} style={{ flex: 1 }} />;
+}
+
+// Main App Component with Navigation
+export default function App() {
+  return (
+    <NavigationContainer> {/* Wraps the entire app with navigation functionality */}
+      <Stack.Navigator>
+        {/* Home Screen */}
+        <Stack.Screen name="Home" component={HomeScreen} />
+        {/* Web Screen */}
+        <Stack.Screen name="Web" component={WebScreen} />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+}
+
+// Styles for UI elements
+const styles = StyleSheet.create({
+  container: {
+    flex: 1, // Takes full screen
+    justifyContent: "center", // Center content vertically
+    alignItems: "center", // Center content horizontally
+    paddingHorizontal: 20, // Padding on sides
+  },
+  title: {
+    fontSize: 20, // Font size for title
+    fontWeight: "bold", // Bold text
+    marginBottom: 30, // Space below the title
+  },
+  logoContainer: {
+    marginVertical: 10, // Adds space between logos
+  },
+  logo: {
+    width: 100, // Width of logo
+    height: 100, // Height of logo
+    resizeMode: "contain", // Ensure logo fits without distortion
+  },
+});

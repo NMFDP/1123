@@ -1,0 +1,73 @@
+import "react-native-gesture-handler";
+import React from "react";
+import { View, Text, Button, StyleSheet } from "react-native";
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
+import { WebView } from "react-native-webview";
+
+const Stack = createStackNavigator();
+
+// Home Screen with 5 buttons
+function HomeScreen({ navigation }) {
+  return (
+    <View style={styles.container}>
+      <Text style={styles.title}>Select a Website</Text>
+
+      <View style={styles.buttonContainer}>
+        <Button title="Google" onPress={() => navigation.navigate("Web", { url: "https://www.google.com" })} />
+      </View>
+
+      <View style={styles.buttonContainer}>
+        <Button title="Facebook" onPress={() => navigation.navigate("Web", { url: "https://www.facebook.com" })} />
+      </View>
+
+      <View style={styles.buttonContainer}>
+        <Button title="YouTube" onPress={() => navigation.navigate("Web", { url: "https://www.youtube.com" })} />
+      </View>
+
+      <View style={styles.buttonContainer}>
+        <Button title="Twitter" onPress={() => navigation.navigate("Web", { url: "https://www.twitter.com" })} />
+      </View>
+
+      <View style={styles.buttonContainer}>
+        <Button title="Instagram" onPress={() => navigation.navigate("Web", { url: "https://www.instagram.com" })} />
+      </View>
+    </View>
+  );
+}
+
+// Web Screen to display the website
+function WebScreen({ route }) {
+  return <WebView source={{ uri: route.params.url }} style={{ flex: 1 }} />;
+}
+
+// Main App with Navigation
+export default function App() {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen name="Web" component={WebScreen} />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+}
+
+// Styles
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    paddingHorizontal: 20, // Adds padding to prevent buttons from touching screen edges
+  },
+  title: {
+    fontSize: 20,
+    fontWeight: "bold",
+    marginBottom: 30, // Adds space below the title
+  },
+  buttonContainer: {
+    width: "80%", // Makes buttons take up 80% of screen width
+    marginVertical: 10, // Adds space between buttons
+  },
+});

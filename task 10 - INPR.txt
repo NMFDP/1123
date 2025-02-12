@@ -1,0 +1,65 @@
+import React, { useRef, useState } from "react";
+import { View, Animated, Button, Text, StyleSheet } from "react-native";
+
+export default function App() {
+  // Animated value to control the progress bar width
+  const progress = useRef(new Animated.Value(0)).current;
+  
+  // State to track completion status
+  const [status, setStatus] = useState("Not Started");
+
+  // Function to start animation
+  const startAnimation = () => {
+    setStatus("In Progress..."); // Update status when animation starts
+
+    Animated.timing(progress, {
+      toValue: 100, // Progress goes from 0 to 100
+      duration: 2000, // Animation duration in milliseconds
+      useNativeDriver: false, // Needed for width animation
+    }).start(() => setStatus("Completed! ✅")); // Update status after animation completes
+  };
+
+  return (
+    <View style={styles.container}>
+      {/* Progress Bar */}
+      <View style={styles.progressBar}>
+        <Animated.View
+          style={[
+            styles.progress,
+            { width: progress.interpolate({ inputRange: [0, 100], outputRange: ["0%", "100%"] }) },
+          ]}
+        />
+      </View>
+
+      {/* Display progress status */}
+      <Text style={styles.status}>{status}</Text>
+
+      {/* Button to start the progress animation */}
+      <Button title="Start Progress" onPress={startAnimation} />
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1, // Full screen
+    justifyContent: "center", // Center vertically
+    alignItems: "center", // Center horizontally
+  },
+  progressBar: {
+    width: 200, // Fixed width of progress bar
+    height: 10, // Fixed height of progress bar
+    backgroundColor: "#ddd", // Light gray background
+    borderRadius: 5, // Rounded corners
+    overflow: "hidden", // Ensures progress bar stays within bounds
+    marginBottom: 10, // Space between progress bar and status text
+  },
+  progress: {
+    height: "100%", // Full height to fill progress bar
+    backgroundColor: "tomato", // Progress bar color
+  },
+  status: {
+    fontSize: 16, // Text size for status
+    marginBottom: 10, // Space between status text and button
+  },
+});

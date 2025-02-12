@@ -1,0 +1,47 @@
+import React, { useState, useEffect } from "react";
+import { View, Text, StyleSheet } from "react-native";
+import { Accelerometer } from "expo-sensors"; // Importing the Accelerometer sensor from Expo
+
+export default function App() {
+  // State to store the message displayed on the screen
+  const [message, setMessage] = useState("Shake the device!");
+
+  useEffect(() => {
+    // Subscribe to accelerometer updates
+    let subscription = Accelerometer.addListener(({ x, y, z }) => {
+      // Calculate the overall acceleration using Pythagorean theorem
+      const acceleration = Math.sqrt(x * x + y * y + z * z);
+
+      // Check if the acceleration exceeds the shake threshold
+      if (acceleration > 1.5) { 
+        setMessage("Device Shaken! Content Refreshed"); // Update message when device is shaken
+
+        // Reset the message back after 2 seconds
+        setTimeout(() => setMessage("Shake the device!"), 2000);
+      }
+    });
+
+    // Cleanup function to remove the sensor listener when the component unmounts
+    return () => subscription.remove();
+  }, []);
+
+  return (
+    <View style={styles.container}>
+      {/* Display the current message */}
+      <Text style={styles.text}>{message}</Text>
+    </View>
+  );
+}
+
+// Styles for the UI
+const styles = StyleSheet.create({
+  container: { 
+    flex: 1, // Takes full screen
+    justifyContent: "center", // Centers content vertically
+    alignItems: "center", // Centers content horizontally
+  },
+  text: { 
+    fontSize: 18, // Text size
+    fontWeight: "bold", // Makes text bold
+  },
+});
